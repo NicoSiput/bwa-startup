@@ -1,6 +1,7 @@
 package campaign
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/gosimple/slug"
@@ -10,6 +11,7 @@ type Service interface {
 	GetCampaigns(userID int) ([]Campaign, error)
 	GetCampaignById(input GetCampaignDetailInput) (Campaign, error)
 	CreateCampaign(input CreateCampaignInput) (Campaign, error)
+	UpdateCampaign(inputID GetCampaignDetailInput, inputData CreateCampaignInput) (Campaign, error)
 }
 
 type service struct {
@@ -56,7 +58,7 @@ func (s *service) CreateCampaign(input CreateCampaignInput) (Campaign, error) {
 	campaign.Description = input.Description
 	campaign.Perks = input.Perks
 	campaign.GoalAmount = input.GoalAmount
-	campaign.User.ID = input.User.ID
+	campaign.UserID = input.User.ID
 
 	slugCandidate := fmt.Sprintf("%s %d", input.Name, input.User.ID)
 	campaign.Slug = slug.Make(slugCandidate)
@@ -67,4 +69,28 @@ func (s *service) CreateCampaign(input CreateCampaignInput) (Campaign, error) {
 	}
 
 	return newCampaign, nil
+}
+
+func (s *service) UpdateCampaign(inputID GetCampaignDetailInput, inputData CreateCampaignInput) (Campaign, error) {
+	campaign, err := s.repository.FindByID(inputID.ID)
+	if err != nil {
+		return campaign, err
+	}
+
+	campaign.Name = inputData.Name
+	campaign.ShortDescription = inputData.ShortDescription
+	campaign.Description = inputData.Description
+	campaign.GoalAmount = inputData.GoalAmount
+	campaign.Perks = inputData.Perks
+
+	if campaign.UserID != inputData.User.ID {
+		return campaign, errors.New("Not an owner of the campaign")
+	}
+
+	updatedCampaign, err := s.repository.Update(campaign)
+	if err != nil {
+		return updatedCampaign, nil
+	}
+
+	return updatedCampaign, nil
 }

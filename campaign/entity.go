@@ -7,7 +7,7 @@ import (
 
 type Campaign struct {
 	ID               int
-	UserId           int
+	UserID           int
 	Name             string
 	ShortDescription string
 	Description      string
@@ -18,13 +18,13 @@ type Campaign struct {
 	Slug             string
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
-	CampaignImages   []CampaignImages `gorm:"foreignKey:campaign_id"`
-	User             user.User        `gorm:"foreignKey:user_id"`
+	CampaignImages   []CampaignImages
+	User             user.User
 }
 
 type CampaignImages struct {
 	ID         int
-	CampaignId int
+	CampaignID int
 	FileName   string
 	IsPrimary  int
 	CreatedAt  time.Time
