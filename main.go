@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -37,19 +38,13 @@ func main() {
 	campaignHandler := handler.NewCampaignHandler(campaignService)
 
 	transactionRepository := transaction.NewRepository(db)
+	paymentService := payment.NewService()
 	transactionService := transaction.NewService(transactionRepository, campaignRepository, paymentService)
-	paymentService := payment.NewService(transactionRepository, campaignRepository)
 
-	transactionHandler := handler.NewTransactionHandler(transactionService, paymentService)
-
-	// user, _ := userService.GetUserById(15)
-	// input := transaction.CreateTransactionInput{}
-	// input.CampaignID = 1
-	// input.Amount = 1000000
-	// input.User = user
-	// transactionService.CreateTransaction(input)
+	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	router := gin.Default()
+	router.Use(cors.Default())
 	router.Static("/images", "./images")
 	api := router.Group("/api/v1")
 	api.POST("/users", userHandler.RegisterUser)
