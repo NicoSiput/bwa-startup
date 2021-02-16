@@ -46,14 +46,19 @@ func main() {
 	transactionService := transaction.NewService(transactionRepository, campaignRepository, paymentService)
 	transactionHandler := handler.NewTransactionHandler(transactionService)
 
-	userWebHandler := webHandler.NewUserHandler()
-
 	router := gin.Default()
 	router.Use(cors.Default())
 
-	router.HTMLRender = loadTemplates("./web/templates")
-
 	router.Static("/images", "./images")
+	router.Static("/css", "./web/assets/css")
+	router.Static("/js", "./web/assets/js")
+	router.Static("/webfonts", "./web/assets/webfonts")
+
+	// Web
+
+	router.HTMLRender = loadTemplates("./web/templates")
+	userWebHandler := webHandler.NewUserHandler(userService)
+
 	api := router.Group("/api/v1")
 	api.POST("/users", userHandler.RegisterUser)
 	api.POST("/sessions", userHandler.Login)
@@ -72,7 +77,10 @@ func main() {
 	api.POST("/transactions", authMiddleware(authService, userService), transactionHandler.CreateTransaction)
 	api.POST("/transactions/notification", authMiddleware(authService, userService), transactionHandler.GetNotification)
 
+	// Web route
 	router.GET("/users", userWebHandler.Index)
+	router.GET("/users/new", userWebHandler.New)
+	router.POST("/users", userWebHandler.Create)
 
 	router.Run()
 
