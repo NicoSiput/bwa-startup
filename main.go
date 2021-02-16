@@ -86,6 +86,11 @@ func main() {
 	router.GET("/users/avatar/:id", userWebHandler.NewAvatar)
 	router.POST("/users/avatar/:id", userWebHandler.CreateAvatar)
 
+	campaignWebHandler := webHandler.NewCampaignHandler(campaignService, userService)
+	router.GET("/campaigns", campaignWebHandler.Index)
+	router.GET("/campaigns/new", campaignWebHandler.New)
+	router.POST("/campaigns", campaignWebHandler.Create)
+
 	router.Run()
 
 }
