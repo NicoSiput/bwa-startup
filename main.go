@@ -104,6 +104,11 @@ func main() {
 	transactionWebHandler := webHandler.NewTransactionHandler(transactionService)
 	router.GET("/transactions", authAdminMiddleware(), transactionWebHandler.Index)
 
+	sessionWebHandler := webHandler.NewSession(userService)
+	router.GET("/login", sessionWebHandler.New)
+	router.POST("/session", sessionWebHandler.Create)
+	router.GET("/logout", sessionWebHandler.Destroy)
+
 	router.Run()
 
 }
