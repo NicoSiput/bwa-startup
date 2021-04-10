@@ -1,6 +1,6 @@
-module github.com/NicoSiput/bwa-startup-backend
+module bwastartup
 
-go 1.12
+go 1.16
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
