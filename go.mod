@@ -1,4 +1,4 @@
-module bwastartup
+module github.com/NicoSiput/bwa-startup-backend
 
 go 1.12
 
