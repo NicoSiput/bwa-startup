@@ -1,5 +1,6 @@
 module bwastartup
 
+// +heroku goVersion 1.16
 go 1.16
 
 require (
