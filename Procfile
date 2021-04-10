@@ -1,1 +1,0 @@
-web: bin/backer-backend
