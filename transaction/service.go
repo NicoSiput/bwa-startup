@@ -5,6 +5,7 @@ import (
 	"bwastartup/payment"
 	"errors"
 	"strconv"
+	"fmt"
 )
 
 type service struct {
@@ -111,7 +112,7 @@ func (s *service) ProcessPayment(input TransactionNotificationInput) error {
 		return err
 	}
 
-	fmt.Println("MASUK SINI NIH !!!")
+	fmt.Println("MASUK SINI NIH")
 	if updatedTransaction.Status == "paid" {
 		campaign.BackerCount = campaign.BackerCount + 1
 		campaign.CurrentAmount = campaign.CurrentAmount + updatedTransaction.Amount
