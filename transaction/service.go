@@ -111,6 +111,7 @@ func (s *service) ProcessPayment(input TransactionNotificationInput) error {
 		return err
 	}
 
+	fmt.Println("MASUK SINI NIH !!!")
 	if updatedTransaction.Status == "paid" {
 		campaign.BackerCount = campaign.BackerCount + 1
 		campaign.CurrentAmount = campaign.CurrentAmount + updatedTransaction.Amount
