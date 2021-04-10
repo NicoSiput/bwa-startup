@@ -27,7 +27,8 @@ import (
 )
 
 func main() {
-	dsn := "root:@tcp(127.0.0.1:3306)/db_bwastartup?charset=utf8mb4&parseTime=True&loc=Local"
+	// dsn := "root:@tcp(127.0.0.1:3306)/db_bwastartup?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "b5aaa32dbe2907:cd45778b@us-cdbr-east-03.cleardb.com/heroku_4cbe1eb50dfae7b?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
