@@ -28,13 +28,12 @@ import (
 
 func init() {
 
-	fmt.Println(os.Getenv("APP_ENV"))
-	// if os.Getenv("APP_ENV") != "production" {
+	// IF IN LOCAL -> UN-REMARK COMMAND BELOW!
+
 	// 	err := godotenv.Load(".env")
 	// 	if err != nil {
 	// 		log.Fatal("Error loading .env file")
 	// 	}
-	// }
 
 }
 
@@ -67,7 +66,7 @@ func main() {
 
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-	// router.Use(CORSMiddleware())
+	router.Use(CORSMiddleware())
 
 	cookieStore := cookie.NewStore([]byte(auth.SECRET_KEY))
 	router.Use(sessions.Sessions("bwastartup", cookieStore))
