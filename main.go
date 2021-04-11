@@ -65,6 +65,7 @@ func main() {
 	transactionService := transaction.NewService(transactionRepository, campaignRepository, paymentService)
 	transactionHandler := handler.NewTransactionHandler(transactionService)
 
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	// router.Use(CORSMiddleware())
 
