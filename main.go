@@ -22,19 +22,19 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func init() {
 
-	if os.Getenv("APP_ENV") != "production" {
-		err := godotenv.Load(".env")
-		if err != nil {
-			log.Fatal("Error loading .env file")
-		}
-	}
+	fmt.Println(os.Getenv("APP_ENV"))
+	// if os.Getenv("APP_ENV") != "production" {
+	// 	err := godotenv.Load(".env")
+	// 	if err != nil {
+	// 		log.Fatal("Error loading .env file")
+	// 	}
+	// }
 
 }
 
