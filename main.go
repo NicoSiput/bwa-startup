@@ -17,7 +17,6 @@ import (
 	webHandler "bwastartup/web/handler"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -27,9 +26,9 @@ import (
 )
 
 func main() {
-	// dsn := "root:@tcp(127.0.0.1:3306)/db_bwastartup?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:@tcp(127.0.0.1:3306)/db_bwastartup?charset=utf8mb4&parseTime=True&loc=Local"
 	// dsn := "b5aaa32dbe2907:cd45778b@us-cdbr-east-03.cleardb.com/heroku_4cbe1eb50dfae7b?reconnect=true"
-	dsn := "b5aaa32dbe2907:cd45778b@tcp(us-cdbr-east-03.cleardb.com:3306)/heroku_4cbe1eb50dfae7b?parseTime=true"
+	// dsn := "b5aaa32dbe2907:cd45778b@tcp(us-cdbr-east-03.cleardb.com:3306)/heroku_4cbe1eb50dfae7b?parseTime=true"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
@@ -51,7 +50,7 @@ func main() {
 	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	router := gin.Default()
-	router.Use(cors.Default())
+	// router.Use(CORSMiddleware())
 
 	cookieStore := cookie.NewStore([]byte(auth.SECRET_KEY))
 	router.Use(sessions.Sessions("bwastartup", cookieStore))
@@ -160,6 +159,23 @@ func authMiddleware(authService auth.Service, userService user.Service) gin.Hand
 
 		c.Set("currentUser", user)
 
+	}
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
 	}
 }
 
