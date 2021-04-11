@@ -12,14 +12,14 @@ type service struct {
 }
 
 type Service interface {
-	GetPaymentURL(transaction Transaction, user user.User) (string, error)
+	GetPaymentResponse(transaction Transaction, user user.User) (midtrans.SnapResponse, error)
 }
 
 func NewService() *service {
 	return &service{}
 }
 
-func (s *service) GetPaymentURL(transaction Transaction, user user.User) (string, error) {
+func (s *service) GetPaymentResponse(transaction Transaction, user user.User) (midtrans.SnapResponse, error) {
 
 	MIDTRANS_SERVER_KEY := os.Getenv("MIDTRANS_SERVER_KEY")
 	MIDTRANS_CLIENT_KEY := os.Getenv("MIDTRANS_CLIENT_KEY")
@@ -46,8 +46,8 @@ func (s *service) GetPaymentURL(transaction Transaction, user user.User) (string
 
 	snapTokenResp, err := snapGateway.GetToken(snapReq)
 	if err != nil {
-		return "", err
+		return snapTokenResp, err
 	}
 
-	return snapTokenResp.RedirectURL, nil
+	return snapTokenResp, nil
 }

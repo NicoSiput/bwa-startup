@@ -4,8 +4,8 @@ import (
 	"bwastartup/campaign"
 	"bwastartup/payment"
 	"errors"
-	"strconv"
 	"fmt"
+	"strconv"
 )
 
 type service struct {
@@ -72,12 +72,13 @@ func (s *service) CreateTransaction(input CreateTransactionInput) (Transaction, 
 		Amount: newTransaction.Amount,
 	}
 
-	paymentURL, err := s.paymentService.GetPaymentURL(paymentTransaction, input.User)
+	payment, err := s.paymentService.GetPaymentResponse(paymentTransaction, input.User)
 	if err != nil {
 		return newTransaction, err
 	}
 
-	newTransaction.PaymentURL = paymentURL
+	newTransaction.PaymentURL = payment.RedirectURL
+	newTransaction.Token = payment.Token
 	newTransaction, err = s.repository.Update(newTransaction)
 	if err != nil {
 		return newTransaction, err

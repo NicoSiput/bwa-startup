@@ -16,6 +16,7 @@ type Transaction struct {
 	Status     string
 	Code       string
 	User       user.User
+	Token      string
 	PaymentURL string
 	Campaign   campaign.Campaign
 	CreatedAt  time.Time

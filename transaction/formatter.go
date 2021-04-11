@@ -90,6 +90,7 @@ type TransactionFormatter struct {
 	Amount     int       `json:"amount"`
 	Status     string    `json:"status"`
 	Code       string    `json:"code"`
+	Token      string    `json:"token"`
 	PaymentURL string    `json:"payment_url"`
 	CreatedAT  time.Time `json:"created_at"`
 }
@@ -103,6 +104,7 @@ func FormatTransaction(transaction Transaction) TransactionFormatter {
 	formatter.Amount = transaction.Amount
 	formatter.Status = transaction.Status
 	formatter.Code = transaction.Code
+	formatter.Token = transaction.Token
 	formatter.PaymentURL = transaction.PaymentURL
 
 	return formatter
