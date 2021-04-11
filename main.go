@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -21,14 +22,27 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
+func init() {
+
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+}
+
 func main() {
-	dsn := "root:@tcp(127.0.0.1:3306)/db_bwastartup?charset=utf8mb4&parseTime=True&loc=Local"
-	// dsn := "b5aaa32dbe2907:cd45778b@us-cdbr-east-03.cleardb.com/heroku_4cbe1eb50dfae7b?reconnect=true"
-	// dsn := "b5aaa32dbe2907:cd45778b@tcp(us-cdbr-east-03.cleardb.com:3306)/heroku_4cbe1eb50dfae7b?parseTime=true"
+	MYSQL_URL := os.Getenv("MYSQL_URL")
+	MYSQL_USER := os.Getenv("MYSQL_USER")
+	MYSQL_PASSWORD := os.Getenv("MYSQL_PASSWORD")
+	MYSQL_DB := os.Getenv("MYSQL_DB")
+
+	dsn := MYSQL_USER + ":" + MYSQL_PASSWORD + "@tcp(" + MYSQL_URL + ":3306)/" + MYSQL_DB + "?parseTime=true"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
